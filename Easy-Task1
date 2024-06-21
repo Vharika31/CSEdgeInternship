@@ -1,1 +1,21 @@
+import requests
+  from bs4 import BeautifulSoup
 
+  # URL of the website to scrape
+    url = 'https://example.com/products'
+
+  # Send an HTTP request to the website
+    response = requests.get(url)
+
+  # Parse the HTML content
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+  # Find relevant elements (e.g., product names, prices)
+    product_names = soup.find_all('h2', class_='product-name')
+    product_prices = soup.find_all('span', class_='product-price')
+
+  # Extract data and store it (e.g., in a CSV or JSON file)
+    for name, price in zip(product_names, product_prices):
+    print(f"Product: {name.text.strip()}, Price: {price.text.strip()}")
+
+  # You can save this data to a CSV or JSON file

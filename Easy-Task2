@@ -1,0 +1,41 @@
+CONVERSATION_PATTERNS = {
+    "greetings": {
+        "patterns": ["hello", "hi", "hey"],
+        "responses": ["Hello!", "Hi there!", "Hey!"]
+    },
+    "goodbyes": {
+        "patterns": ["bye", "goodbye", "see you"],
+        "responses": ["Goodbye!", "See you later!", "Bye!"]
+    },
+    // Add more intents as needed
+}
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+
+def process_input(input_text):
+    tokens = nltk.word_tokenize(input_text)
+    lemmas = [lemmatizer.lemmatize(token.lower()) for token in tokens]
+    return lemmas
+from nltk import NaiveBayesClassifier
+
+def train_classifier(patterns):
+    training_data = []
+    for intent, data in patterns.items():
+        for pattern in data['patterns']:
+            tokens = process_input(pattern)
+            training_data.append((tokens, intent))
+    classifier = NaiveBayesClassifier.train(training_data)
+    return classifier
+import random
+
+def generate_response(classifier, user_input):
+    category = classifier.classify(process_input(user_input))
+    if category in CONVERSATION_PATTERNS:
+        return random.choice(CONVERSATION_PATTERNS[category]['responses'])
+    else:
+        return "I'm not sure how to respond to that."
+
+// Example usage:
+classifier = train_classifier(CONVERSATION_PATTERNS)
+user_input = "hello"
+print(generate_response(classifier, user_input))

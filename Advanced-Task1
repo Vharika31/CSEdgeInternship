@@ -1,6 +1,5 @@
 from PIL import Image
 import os
-
 def convert_image(input_path, output_path, output_format):
     try:
         # Open the image

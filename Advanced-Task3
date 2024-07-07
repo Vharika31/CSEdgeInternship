@@ -1,45 +1,43 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+import seaborn as sns
 import pandas as pd
-data_url = "http://lib.stat.cmu.edu/datasets/boston"
-raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
-data = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
-target = raw_df.values[1::2, 2]
+import matplotlib.pyplot as plt
 
-# Load the Boston housing dataset
- 
-X = data
-y = target
+# Load the Iris dataset from Seaborn
+iris = sns.load_dataset("iris")
+numeric_iris = iris.drop(columns='species')
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(iris.head())
 
-# Initialize the linear regression model
-model = LinearRegression()
+# Summary statistics
+print("\nSummary statistics:")
+print(iris.describe())
 
-# Fit the model on the training data
-model.fit(X_train, y_train)
+# Checking for missing values
+print("\nMissing values:")
+print(iris.isnull().sum())
 
-# Predict on the training and testing data
-y_train_pred = model.predict(X_train)
-y_test_pred = model.predict(X_test)
+# Visualizations
+# Pairplot
+sns.pairplot(iris, hue="species")
+plt.title("Pairplot of Iris Dataset")
+plt.show()
 
-# Calculate the scores
-train_score = model.score(X_train, y_train)
-test_score = model.score(X_test, y_test)
+# Boxplot
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=iris, orient="h")
+plt.title("Boxplot of Iris Dataset")
+plt.show()
 
-print("Training score:", train_score)
-print("Testing score:", test_score)
+# Histograms
+plt.figure(figsize=(10, 6))
+iris.hist()
+plt.suptitle("Histograms of Iris Dataset")
+plt.show()
 
-# Plot residuals
-plt.scatter(y_train_pred, y_train_pred - y_train, c='blue', marker='o', label='Training data')
-plt.scatter(y_test_pred, y_test_pred - y_test, c='lightgreen', marker='s', label='Testing data')
-plt.xlabel('Predicted values')
-plt.ylabel('Residuals')
-plt.legend(loc='upper left')
-plt.hlines(y=0, xmin=0, xmax=50, lw=2, color='red')
-plt.title('Residual plot')
+# Correlation heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(numeric_iris.corr(), annot=True, cmap="coolwarm")
+plt.title("Correlation Heatmap of Iris Dataset")
 plt.show()

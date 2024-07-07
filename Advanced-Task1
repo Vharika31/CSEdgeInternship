@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+
 def convert_image(input_path, output_path, output_format):
     try:
         # Open the image
@@ -27,9 +28,9 @@ def main():
 
     # Set the output path
     output_path = f"{file_name_without_ext}_converted.{output_format.lower()}"
-    
+
     # Convert the image
     convert_image(input_path, output_path, output_format)
 
 if __name__ == "__main__":
-    main()
+    main()
